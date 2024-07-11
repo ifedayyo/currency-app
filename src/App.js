@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
+//*const mockRates = {
+//USD: 1,
+//EUR: 0.85,
+//CAD: 1.25,
+//INR: 74.5,
+//};
+
 export default function App() {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(true);
@@ -51,10 +58,12 @@ export default function App() {
           );
 
         const data = await res.json();
+        console.log(data);
 
         //check if the API response indicates a failure
         if (data.Response === "False") throw new Error("Currency not found");
 
+        //setCurrencyData(mockRates);
         setCurrencyData(data); //update state with fetched data
         setLoading(false); //set loading to false
       } catch (err) {
