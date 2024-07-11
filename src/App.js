@@ -17,6 +17,8 @@ export default function App() {
   const [convertedAmount, setConvertedAmount] = useState(null);
   const [currencyData, setCurrencyData] = useState(null);
 
+  const apiKey = process.env.CURRENCY_APP_API_KEY;
+
   function handleInput(event) {
     setAmount(Number(event.target.value));
   }
@@ -31,25 +33,27 @@ export default function App() {
 
   function handleConvert() {
     if (currencyData && amount && fromCurrency && toCurrency) {
-      const fromRate = currencyData[fromCurrency];
-      const toRate = currencyData[toCurrency];
+      const fromRate = currencyData.rates[fromCurrency];
+      const toRate = currencyData.rates[toCurrency];
 
       if (typeof fromRate === "number" && typeof toRate === "number") {
         const converted = (amount / fromRate) * toRate;
         setConvertedAmount(converted.toFixed(0));
       } else {
-        console.log(
+        console.error(
           `Invalid rates => From rate: ${fromRate}, To rate: ${toRate}`
         );
+        setError("An error occured during conversion. Please check currencies");
       }
     }
+    handleConvert();
   }
 
   useEffect(function () {
     async function convertCurrency() {
       try {
         const res = await fetch(
-          `https://api.freecurrencyapi.com/v1/latest?apikey=fca_live_o5DbnBszGqxplDIrE6h2Setm1KEoSR0nuTobjKaq`
+          `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}`
         );
 
         if (!res.ok)
