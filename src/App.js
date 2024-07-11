@@ -58,7 +58,6 @@ export default function App() {
           );
 
         const data = await res.json();
-        console.log(data);
 
         //check if the API response indicates a failure
         if (data.Response === "False") throw new Error("Currency not found");
