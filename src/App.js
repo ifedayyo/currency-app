@@ -31,7 +31,7 @@ export default function App() {
     setToCurrency(event.target.value);
   }
 
-  function handleConvert() {
+  function HandleConvert() {
     if (currencyData && amount && fromCurrency && toCurrency) {
       const fromRate = currencyData.rates[fromCurrency];
       const toRate = currencyData.rates[toCurrency];
@@ -46,7 +46,6 @@ export default function App() {
         setError("An error occured during conversion. Please check currencies");
       }
     }
-    handleConvert();
   }
 
   useEffect(function () {
@@ -74,10 +73,10 @@ export default function App() {
           setError(err.message);
           setLoading(false);
         }
+        convertCurrency();
       }
     }
-    convertCurrency();
-  }, []);
+  });
 
   return (
     <div className="btn-style">
@@ -109,7 +108,7 @@ export default function App() {
         <option value="CAD">CAD</option>
         <option value="INR">INR</option>
       </select>
-      <button className="btn-style" onClick={handleConvert}>
+      <button className="btn-style" onClick={HandleConvert}>
         Convert
       </button>
       {convertedAmount !== null && (
@@ -118,7 +117,8 @@ export default function App() {
     </div>
   );
 }
+
 //currecncy conversion app. so we enter any number in the
 //input section. afterwards, there will be the a conversion
 //from the first currency to the second one you choose
-//first we want react to recognise our input
+//first we want react to recognise our input}
