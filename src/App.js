@@ -39,35 +39,38 @@ export default function App() {
     }
   }
 
-  useEffect(function () {
-    async function convertCurrency() {
-      try {
-        const res = await fetch(
-          `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`
-        );
-
-        if (!res.ok)
-          throw new Error(
-            "Something went wrong with fetching currency derivative"
+  useEffect(
+    function () {
+      async function convertCurrency() {
+        try {
+          const res = await fetch(
+            `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`
           );
 
-        const data = await res.json();
+          if (!res.ok)
+            throw new Error(
+              "Something went wrong with fetching currency derivative"
+            );
 
-        //check if the API response indicates a failure
-        if (data.Response === "False") throw new Error("Currency not found");
+          const data = await res.json();
 
-        //setCurrencyData(mockRates);
-        setCurrencyData(data); //update state with fetched data
-        setLoading(false); //set loading to false
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-          setLoading(false);
+          //check if the API response indicates a failure
+          if (data.Response === "False") throw new Error("Currency not found");
+
+          //setCurrencyData(mockRates);
+          setCurrencyData(data); //update state with fetched data
+          setLoading(false); //set loading to false
+        } catch (err) {
+          if (err.name !== "AbortError") {
+            setError(err.message);
+            setLoading(false);
+          }
         }
       }
-    }
-    convertCurrency();
-  });
+      convertCurrency();
+    },
+    [amount, fromCurrency, toCurrency]
+  );
 
   return (
     <div className="btn-style">
@@ -75,6 +78,7 @@ export default function App() {
         value={amount}
         placeholder="Enter amount..."
         onChange={handleInput}
+        disabled={loading}
         className="btn-style"
         type="number"
       />
@@ -83,6 +87,7 @@ export default function App() {
         className="btn-style"
         value={fromCurrency}
         onChange={handleFromCurrencyChange}
+        disabled={loading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
@@ -93,6 +98,7 @@ export default function App() {
         className="btn-style"
         value={toCurrency}
         onChange={handleToCurrencyChange}
+        disabled={loading}
       >
         <option value="USD">USD</option>
         <option value="EUR">EUR</option>
