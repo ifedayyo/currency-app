@@ -10,35 +10,6 @@ export default function App() {
   const [convertedAmount, setConvertedAmount] = useState(null);
   const [currencyData, setCurrencyData] = useState(null);
 
-  function handleInput(event) {
-    setAmount(Number(event.target.value));
-  }
-
-  function handleFromCurrencyChange(event) {
-    setFromCurrency(event.target.value);
-  }
-
-  function handleToCurrencyChange(event) {
-    setToCurrency(event.target.value);
-  }
-
-  function HandleConvert() {
-    if (currencyData && amount && fromCurrency && toCurrency) {
-      const fromRate = currencyData.rates[fromCurrency];
-      const toRate = currencyData.rates[toCurrency];
-
-      if (typeof fromRate === "number" && typeof toRate === "number") {
-        const converted = (amount / fromRate) * toRate;
-        setConvertedAmount(converted.toFixed(0));
-      } else {
-        console.error(
-          `Invalid rates => From rate: ${fromRate}, To rate: ${toRate}`
-        );
-        setError("An error occured during conversion. Please check currencies");
-      }
-    }
-  }
-
   useEffect(
     function () {
       async function convertCurrency() {
@@ -71,6 +42,35 @@ export default function App() {
     },
     [amount, fromCurrency, toCurrency]
   );
+
+  function handleInput(event) {
+    setAmount(Number(event.target.value));
+  }
+
+  function handleFromCurrencyChange(event) {
+    setFromCurrency(event.target.value);
+  }
+
+  function handleToCurrencyChange(event) {
+    setToCurrency(event.target.value);
+  }
+
+  function HandleConvert() {
+    if (currencyData && amount && fromCurrency && toCurrency) {
+      const fromRate = currencyData.rates[fromCurrency];
+      const toRate = currencyData.rates[toCurrency];
+
+      if (typeof fromRate === "number" && typeof toRate === "number") {
+        const converted = (amount / fromRate) * toRate;
+        setConvertedAmount(converted.toFixed(0));
+      } else {
+        console.error(
+          `Invalid rates => From rate: ${fromRate}, To rate: ${toRate}`
+        );
+        setError("An error occured during conversion. Please check currencies");
+      }
+    }
+  }
 
   return (
     <div className="btn-style">
