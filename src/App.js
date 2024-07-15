@@ -1,23 +1,14 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-//*const mockRates = {
-//USD: 1,
-//EUR: 0.85,
-//CAD: 1.25,
-//INR: 74.5,
-//};
-
 export default function App() {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
   const [convertedAmount, setConvertedAmount] = useState(null);
   const [currencyData, setCurrencyData] = useState(null);
-
-  const apiKey = process.env.CURRENCY_APP_API_KEY;
 
   function handleInput(event) {
     setAmount(Number(event.target.value));
@@ -52,7 +43,7 @@ export default function App() {
     async function convertCurrency() {
       try {
         const res = await fetch(
-          `https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}`
+          `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCurrency}&to=${toCurrency}`
         );
 
         if (!res.ok)
@@ -73,9 +64,9 @@ export default function App() {
           setError(err.message);
           setLoading(false);
         }
-        convertCurrency();
       }
     }
+    convertCurrency();
   });
 
   return (
